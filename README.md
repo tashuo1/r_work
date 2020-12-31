@@ -1,1 +1,7 @@
-# r_work
+```mind
+nihao 
+ -nihoa 
+ -nihai 
+  -niaho 
+  -fdkls 
+```
