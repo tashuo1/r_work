@@ -1,0 +1,65 @@
+######################################################################
+# Build Tools
+
+.gradle
+/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+######################################################################
+# IDE
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### JRebel ###
+rebel.xml
+
+### NetBeans ###
+nbproject/private/
+build/*
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+######################################################################
+# Others
+.DS_Store
+*.log
+*.xml.versionsBackup
+*.swp
+
+!*/build/*.java
+!*/build/*.html
+!*/build/*.xml
+
+######################################################################
+# Local runtime state
+
+ontology-lite/runtime-config/*.env
+!ontology-lite/runtime-config/*.env.example
+ontology-lite/runtime-data/
+ontology-lite/runtime-logs/
+ontology-lite/runtime-pids/
+ontology-lite/runtime-skills/
+
+######################################################################
+# Local agent/tool state
+
+.claude/
+.superpowers/
+.github/FUNDING.yml

@@ -1,0 +1,440 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>本体数据平台</title>
+  <link rel="stylesheet" href="/styles.css?v=20260523-runtime-trust">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand">
+      <span class="brand-mark">O</span>
+      <div class="brand-copy">
+        <strong>本体数据平台</strong>
+        <small>Ontology Workspace</small>
+      </div>
+      <button id="sidebarToggle" class="sidebar-toggle" type="button" aria-label="收起功能菜单" aria-expanded="true" title="收起功能菜单">
+        <span class="sidebar-toggle-icon" aria-hidden="true">‹</span>
+      </button>
+    </div>
+    <nav aria-label="主导航">
+      <a href="#dashboard" class="active" title="工作台"><span>01</span><span class="nav-text" data-nav-text>工作台</span></a>
+      <a href="#datasources" title="数据源"><span>02</span><span class="nav-text" data-nav-text>数据源</span></a>
+      <a href="#compute-resources" title="计算资源"><span>03</span><span class="nav-text" data-nav-text>计算资源</span></a>
+      <a href="#modeling" title="本体建模"><span>04</span><span class="nav-text" data-nav-text>本体建模</span></a>
+      <a href="#dictionary" title="数据标准"><span>05</span><span class="nav-text" data-nav-text>数据标准</span></a>
+      <a href="#etl" title="T+1 同步"><span>06</span><span class="nav-text" data-nav-text>T+1 同步</span></a>
+      <a href="#query" title="语义问数"><span>07</span><span class="nav-text" data-nav-text>语义问数</span></a>
+      <a href="#openapi" title="OpenAPI"><span>08</span><span class="nav-text" data-nav-text>OpenAPI</span></a>
+      <a href="#acceptance" title="验收清单"><span>09</span><span class="nav-text" data-nav-text>验收清单</span></a>
+    </nav>
+    <div class="sidebar-foot">
+      <span class="status-dot"></span>
+      <div class="sidebar-foot-copy">
+        <strong>演示环境运行中</strong>
+        <small>单体轻量版 · 端口 9000</small>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <header class="topbar">
+      <div class="workspace">
+        <span>工作空间</span>
+        <strong>一期体验 / 默认项目</strong>
+      </div>
+      <div class="top-actions">
+        <span class="env-pill">Dev</span>
+        <button id="refreshAll">刷新状态</button>
+        <a class="ghost" href="/api/v1/dashboard" target="_blank">API 状态</a>
+      </div>
+    </header>
+
+    <section id="dashboard" class="hero section active-view" data-view="dashboard">
+      <div class="hero-copy">
+        <span class="eyebrow">Ontology DataWorks</span>
+        <h1>本体数据工作台</h1>
+        <p>面向业务的数据资产平台：接入三套达梦源库，生成本体对象与标准字段，完成 T+1 同步后直接支持自然语言问数和开放接口。</p>
+        <div class="hero-actions">
+          <a class="primary-link" href="#query">进入语义问数</a>
+          <a class="ghost" href="#modeling">查看本体模型</a>
+        </div>
+      </div>
+      <div class="hero-panel">
+        <div class="panel-header">
+          <span>平台状态</span>
+          <strong>实时</strong>
+        </div>
+        <div id="runtimeTrustBanner" class="runtime-trust-banner"></div>
+        <div class="metrics" id="metrics"></div>
+        <div id="dashboardTodos" class="dashboard-todos"></div>
+      </div>
+    </section>
+
+    <section class="section flow-section active-view" data-view="dashboard" aria-label="产品流程">
+      <div class="section-title compact-title">
+        <div>
+          <span class="eyebrow">Workflow</span>
+          <h2>本体数据链路</h2>
+        </div>
+      </div>
+      <div class="workflow">
+        <a href="#datasources">
+          <span>1</span>
+          <strong>数据接入</strong>
+          <small>达梦源库 · 只读巡检</small>
+        </a>
+        <a href="#modeling">
+          <span>2</span>
+          <strong>本体建模</strong>
+          <small>对象 · 属性 · 关系</small>
+        </a>
+        <a href="#dictionary">
+          <span>3</span>
+          <strong>数据标准</strong>
+          <small>AI生成 · 命名词根 · 标准字段</small>
+        </a>
+        <a href="#etl">
+          <span>4</span>
+          <strong>T+1 同步</strong>
+          <small>DAG · 质量门禁</small>
+        </a>
+        <a href="#query">
+          <span>5</span>
+          <strong>语义服务</strong>
+          <small>问数 · 图表 · API</small>
+        </a>
+      </div>
+    </section>
+
+    <section id="query" class="section console-section" data-view="query">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Ask Data</span>
+          <h2>业务问数工作台</h2>
+          <p>用自然语言访问本体语义层，平台负责生成受控 SQL、执行安全闸校验，并返回可下载结果。</p>
+        </div>
+      </div>
+      <div class="query-layout">
+        <article class="query-card">
+          <div class="query-box">
+            <label for="question">问题</label>
+            <textarea id="question" rows="3">查询投资项目合同列表</textarea>
+            <div class="row">
+              <button id="askQuestion">执行问数</button>
+              <button id="chartQuery" class="secondary">切换图表</button>
+              <button id="downloadQuery" class="secondary">下载CSV</button>
+              <button id="unsafeSql" class="danger">测试安全闸</button>
+            </div>
+          </div>
+          <div id="queryResult" class="result"></div>
+        </article>
+        <article class="audit-card">
+          <div class="card-head">
+            <h3>运行态追踪</h3>
+            <span class="tag">Audit</span>
+          </div>
+          <div id="auditLog" class="timeline"></div>
+        </article>
+      </div>
+    </section>
+
+    <section id="datasources" class="section" data-view="datasources">
+      <div class="datasource-workbench">
+        <div class="datasource-breadcrumb">DataWorks <span>/</span> 工作空间 <span>/</span> 数据源</div>
+        <div class="datasource-page-head">
+          <div>
+            <h2>数据源</h2>
+            <p>固定验证三套达梦源库：财务、投资、人事。填写测试库连接信息后执行真实 JDBC 连接测试。</p>
+          </div>
+        </div>
+        <div class="datasource-tabs" id="datasourceTabs">
+          <button class="active">数据源列表</button>
+        </div>
+        <div class="datasource-toolbar" id="datasourceToolbar">
+          <button id="addSource">新增数据源</button>
+          <button id="batchAddSource" class="outline">批量新增数据源</button>
+          <label class="filter-control">数据源类型：
+            <select id="sourceTypeFilter">
+              <option value="">全部类型</option>
+              <option value="DM">DM</option>
+              <option value="MYSQL">MySQL</option>
+              <option value="POLARDB">PolarDB</option>
+            </select>
+          </label>
+          <label class="filter-control grow">数据源名称：
+            <input id="sourceNameFilter" placeholder="请输入名称">
+          </label>
+          <button id="inspectSources" class="icon-button" title="刷新/巡检">↻</button>
+          <button id="sourceSettings" class="icon-button" title="列表设置">⚙</button>
+        </div>
+        <div class="datasource-list" id="datasourceTable"></div>
+        <div class="datasource-modal hidden" id="datasourceModal" aria-hidden="true">
+          <div class="modal-backdrop" data-close-source-modal="true"></div>
+          <div class="modal-panel" role="dialog" aria-modal="true" aria-labelledby="datasourceModalTitle">
+            <button class="modal-close" data-close-source-modal="true" aria-label="关闭">×</button>
+            <h3 id="datasourceModalTitle">新增数据源</h3>
+            <div class="common-source-row">
+              <span>常用数据源：</span>
+              <button data-pick-source-type="DM"><span class="source-logo dm">DM</span> DM</button>
+              <button data-pick-source-type="MYSQL"><span class="source-logo mysql">My</span> MySQL</button>
+              <button data-pick-source-type="POLARDB"><span class="source-logo polar">P</span> PolarDB</button>
+            </div>
+            <div class="source-category-row" id="sourceCategoryRow"></div>
+            <div class="source-search">
+              <input id="sourceTypeSearch" placeholder="请搜索数据源名称">
+              <button class="icon-button" id="sourceTypeSearchButton">⌕</button>
+            </div>
+            <div class="datasource-type-grid" id="datasourceTypeGrid"></div>
+          </div>
+        </div>
+        <div class="datasource-create-panel hidden" id="datasourceCreatePanel"></div>
+      </div>
+    </section>
+
+    <section id="compute-resources" class="section" data-view="compute-resources">
+      <div class="datasource-workbench compute-resource-workbench">
+        <div class="datasource-breadcrumb">DataWorks <span>/</span> 工作空间 <span>/</span> 计算资源</div>
+        <div class="datasource-page-head">
+          <div>
+            <h2>计算资源</h2>
+            <p>配置本体数据平台的运行存储目标，初始化 ontology_meta 与 ontology_instance 后承载元数据和实例层数据。</p>
+          </div>
+        </div>
+        <div class="datasource-tabs" id="computeResourceTabs">
+          <button class="active">计算资源列表</button>
+        </div>
+        <div class="datasource-toolbar" id="computeResourceToolbar">
+          <button id="addComputeResource">新增计算资源</button>
+          <button id="batchAddComputeResource" class="outline">批量新增计算资源</button>
+          <label class="filter-control">资源类型：
+            <select id="computeTypeFilter">
+              <option value="">全部类型</option>
+              <option value="DM">DM</option>
+              <option value="MYSQL">MySQL</option>
+              <option value="POLARDB">PolarDB</option>
+            </select>
+          </label>
+          <label class="filter-control grow">资源名称：
+            <input id="computeNameFilter" placeholder="请输入名称">
+          </label>
+          <button id="inspectComputeResources" class="icon-button" title="刷新/巡检">↻</button>
+          <button id="computeResourceSettings" class="icon-button" title="列表设置">⚙</button>
+        </div>
+        <div class="datasource-list" id="computeResourceTable"></div>
+        <div class="datasource-create-panel hidden" id="computeResourceCreatePanel"></div>
+      </div>
+    </section>
+
+    <section id="modeling" class="section" data-view="modeling">
+      <div class="modeling-workbench" id="modelingWorkbench">
+        <div class="datasource-breadcrumb">Ontology Studio <span>/</span> 默认项目 <span>/</span> 本体建模</div>
+        <div class="modeling-hero" id="modelingHero">
+          <div class="modeling-hero-copy">
+            <div class="modeling-title-stack">
+              <span class="eyebrow">Ontology Modeling</span>
+              <h2>本体建模</h2>
+            </div>
+            <p>状态、动作、风险、流程同屏推进，细节进入下方步骤面板。</p>
+          </div>
+          <div class="modeling-command-center" aria-label="本体建模任务驾驶舱">
+            <div class="modeling-stage-card" id="modelingStageCard"></div>
+            <div class="modeling-next-actions" id="modelingNextActions">
+              <div class="modeling-panel-title">
+                <span>下一步动作</span>
+                <small>按当前状态推荐</small>
+              </div>
+              <div class="modeling-action-buttons">
+                <button id="publishLatest" data-modeling-action="publish">确认生效</button>
+                <button id="generateCandidates" class="secondary" data-modeling-action="generate">生成候选</button>
+                <button id="scanMetadata" class="secondary" data-modeling-action="scan">扫描元数据</button>
+                <button id="rollbackLatest" class="secondary" data-modeling-action="rollback">回滚最近版本</button>
+              </div>
+            </div>
+            <div class="modeling-risk-panel" id="modelingRiskPanel"></div>
+          </div>
+        </div>
+        <div class="modeling-summary" id="modelingSummary"></div>
+        <div class="modeling-focus-area" id="modelingFocusArea">
+          <div class="modeling-step-rail" id="modelingStepRail" aria-label="本体建模流程步骤">
+            <button class="active" data-modeling-tab="scan">
+              <span class="step-index">01</span>
+              <span class="step-copy"><strong>元数据扫描</strong><small>源表、字段、主键识别</small></span>
+            </button>
+            <button data-modeling-tab="candidates">
+              <span class="step-index">02</span>
+              <span class="step-copy"><strong>候选确认</strong><small>对象、属性、关系候选</small></span>
+            </button>
+            <button data-modeling-tab="graph">
+              <span class="step-index">03</span>
+              <span class="step-copy"><strong>语义图谱</strong><small>业务对象关系探索</small></span>
+            </button>
+            <button data-modeling-tab="versions">
+              <span class="step-index">04</span>
+              <span class="step-copy"><strong>版本发布</strong><small>影响评估、发布、回滚</small></span>
+            </button>
+          </div>
+          <div class="modeling-main">
+            <div class="modeling-pane active" data-modeling-pane="scan">
+              <div class="modeling-pane-head">
+                <div>
+                  <h3>元数据扫描</h3>
+                  <p>先从已启用数据源读取 Schema 元数据，沉淀表、字段和候选主键，为候选建模提供输入。</p>
+                </div>
+                <span class="tag">Schema Only</span>
+              </div>
+              <div class="modeling-scan-grid">
+                <div id="metadataScanSummary" class="modeling-info-panel"></div>
+                <div id="metadataTableList" class="modeling-table-panel"></div>
+              </div>
+            </div>
+            <div class="modeling-pane" data-modeling-pane="candidates">
+              <div class="modeling-pane-head">
+                <div>
+                  <h3>候选建模</h3>
+                  <p>按对象、属性、关系三层展示模型候选，突出置信度、标准字段映射和待人工确认项。</p>
+                </div>
+                <span class="tag warning">Human Review</span>
+              </div>
+              <div id="modelObjects" class="candidate-model-list"></div>
+              <div id="relationModelList" class="relation-model-list"></div>
+            </div>
+            <div class="modeling-pane" data-modeling-pane="graph">
+              <div class="modeling-pane-head">
+                <div>
+                  <h3>语义图谱</h3>
+                  <p>以业务对象为节点、关系类型为边，支持点击节点或边查看来源、属性和置信度。</p>
+                </div>
+                <span class="tag success">Graph View</span>
+              </div>
+              <div class="model-graph-layout">
+                <div id="semanticGraph" class="semantic-graph" aria-label="本体语义图谱"></div>
+                <aside id="modelDetailPanel" class="model-detail-panel"></aside>
+              </div>
+            </div>
+            <div class="modeling-pane" data-modeling-pane="versions">
+              <div class="modeling-pane-head">
+                <div>
+                  <h3>版本发布</h3>
+                  <p>查看版本状态、发布影响、最近审计记录，并完成二次确认发布或回滚。</p>
+                </div>
+                <span class="tag">Version Control</span>
+              </div>
+              <div class="version-release-grid">
+                <div id="versions" class="modeling-version-list"></div>
+                <div id="modelingImpactPanel" class="modeling-info-panel"></div>
+              </div>
+              <div id="modelingAuditLogs" class="modeling-audit-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dictionary" class="section" data-view="dictionary">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Data Standards</span>
+          <h2>数据标准</h2>
+          <p>通过 AI 生成候选词根和标准字段，人工审核后写入计算资源的标准四表。</p>
+        </div>
+        <div class="row">
+          <button id="exportDictionary" class="secondary">导出CSV</button>
+        </div>
+      </div>
+      <div class="data-standard-layout">
+        <aside class="data-standard-nav data-standard-side" aria-label="数据标准子页面">
+          <button class="active" data-standard-tab="ai">AI生成</button>
+          <button data-standard-tab="roots">命名词根</button>
+          <button data-standard-tab="fields">标准字段</button>
+        </aside>
+        <div class="data-standard-main">
+          <div class="data-standard-pane active" data-standard-pane="ai">
+            <div class="standard-panel-head">
+              <div>
+                <h3>AI生成</h3>
+                <p>选择一个或多个业务数据源，后台按 cizhu-shengcheng 规则生成可审核候选。</p>
+              </div>
+              <button id="generateDataStandards">确认生成</button>
+            </div>
+            <div id="dataStandardSources" class="standard-source-grid"></div>
+            <div id="dataStandardGenerationResult" class="result compact">
+              <div class="data-standard-generation-card idle" data-standard-generation-progress>
+                <div class="generation-status-line">
+                  <strong>生成进度</strong>
+                  <span class="tag">待开始</span>
+                </div>
+                <p>选择数据源后点击确认生成，页面会展示候选生成进度和结果摘要。</p>
+              </div>
+            </div>
+          </div>
+          <div class="data-standard-pane" data-standard-pane="roots">
+            <div class="standard-panel-head">
+              <div>
+                <h3>命名词根</h3>
+                <p>默认展示已生效与待审核词根；已拒绝项保留但不进入默认视图。</p>
+              </div>
+              <label class="inline-check"><input id="showRejectedRoots" type="checkbox"> 显示已拒绝</label>
+            </div>
+            <div id="roots"></div>
+          </div>
+          <div class="data-standard-pane" data-standard-pane="fields">
+            <div class="standard-panel-head">
+              <div>
+                <h3>标准字段</h3>
+                <p>标准字段由已登记词根下划线组合，审核通过后写入字段与词根映射表。</p>
+              </div>
+              <label class="inline-check"><input id="showRejectedFields" type="checkbox"> 显示已拒绝</label>
+            </div>
+            <div id="fields"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="etl" class="section" data-view="etl">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Data Pipeline</span>
+          <h2>T+1 同步</h2>
+          <p>按生效模型生成 DAG，执行对象任务、关系任务、质量门禁、watermark 和快照发布。</p>
+        </div>
+        <div class="row">
+          <button id="loadSchedule">查看调度</button>
+          <button id="updateSchedule" class="secondary">改到02:30</button>
+          <button id="triggerEtl" class="secondary">手动触发 T+1</button>
+        </div>
+      </div>
+      <div id="schedulePanel" class="result compact"></div>
+      <div class="table-shell" id="etlJobs"></div>
+    </section>
+
+    <section id="openapi" class="section" data-view="openapi">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Open Service</span>
+          <h2>OpenAPI</h2>
+          <p>对外暴露元数据、对象类型、关系类型、词典和对象实例只读查询。</p>
+        </div>
+        <button id="loadOpenapi">加载开放接口数据</button>
+      </div>
+      <div id="openapiResult" class="result"></div>
+    </section>
+
+    <section id="acceptance" class="section" data-view="acceptance">
+      <div class="section-title">
+        <div>
+          <span class="eyebrow">Acceptance</span>
+          <h2>一期验收清单</h2>
+          <p>P0 用例必须全部通过；当前页面展示的是轻量版已落地验收项和可操作入口。</p>
+        </div>
+        <button id="loadAcceptance">刷新验收状态</button>
+      </div>
+      <div class="table-shell" id="acceptanceList"></div>
+    </section>
+  </main>
+
+  <script src="/app.js?v=20260523-runtime-trust"></script>
+</body>
+</html>
